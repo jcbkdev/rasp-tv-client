@@ -19,7 +19,7 @@ async function followRedirect(url: string): Promise<string> {
     }
 }
 
-export default function VideoPlayer() {
+export default function VideoPlayer(props: { url: string }) {
     const containerRef = useRef<HTMLDivElement>(null);
     const playerRef = useRef<Player>(null);
 
@@ -39,7 +39,7 @@ export default function VideoPlayer() {
                 },
                 () => {
                     videojs.log("player is ready");
-                    followRedirect("url").then((url) => {
+                    followRedirect(props.url).then((url) => {
                         player.autoplay(true);
                         player.src(url);
                     });
@@ -48,12 +48,12 @@ export default function VideoPlayer() {
         } else {
             const player = playerRef.current;
 
-            followRedirect("url").then((url) => {
+            followRedirect(props.url).then((url) => {
                 player.autoplay(true);
                 player.src(url);
             });
         }
-    }, [containerRef]);
+    }, [containerRef, props.url]);
 
     useEffect(() => {
         if (playerRef.current) {

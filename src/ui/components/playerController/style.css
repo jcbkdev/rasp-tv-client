@@ -1,0 +1,23 @@
+.hidden {
+    display: none;
+}
+
+#channels-list {
+    position: absolute;
+    width: 100vw;
+    bottom: 0;
+    height: auto;
+    padding: 24px;
+    padding-bottom: 52px;
+    display: flex;
+    z-index: 10;
+    gap: 24px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    background: linear-gradient(#00000000, #000000ff);
+    box-sizing: border-box;
+}
+
+#channels-list::-webkit-scrollbar {
+    display: none;
+}
