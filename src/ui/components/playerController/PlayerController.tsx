@@ -1,6 +1,7 @@
 import "./style.css";
 import { useEffect, useState } from "react";
 import Channel from "../channel/Channel";
+import ChannelDetails from "../channelDetails/ChannelDetails";
 
 export interface Channel {
     channel_id: number;
@@ -13,13 +14,25 @@ export interface Channel {
 export default function PlayerController(props: {
     setUrl: React.Dispatch<React.SetStateAction<string>>;
 }) {
+    const [playingChannel, setPlayingChannel] = useState<Channel | undefined>(
+        undefined
+    );
     const [channels, setChannels] = useState<Channel[]>([]);
     const [pointer, setPointer] = useState<number>(0);
     const [visible, setVisible] = useState<boolean>(false);
+    const [detailsVisible, setDetailsVisible] = useState<boolean>(false);
+    const [detailsTimeout, setDetailsTimeout] = useState<NodeJS.Timeout>();
 
     const selectChannel = () => {
         console.log("changing channel to:", channels[pointer]);
+        setPlayingChannel(channels[pointer]);
         props.setUrl(channels[pointer].channel_url);
+        setDetailsVisible(true);
+        if (detailsTimeout) {
+            clearTimeout(detailsTimeout);
+        }
+        const interval = setTimeout(() => setDetailsVisible(false), 5000);
+        setDetailsTimeout(interval);
         setVisible(false);
     };
 
@@ -75,6 +88,7 @@ export default function PlayerController(props: {
         const responseJson = (await response.json()) as Channel[];
         console.log("setting data...", responseJson);
         setChannels(responseJson);
+        setPlayingChannel(responseJson[0]);
         props.setUrl(responseJson[0].channel_url);
     };
 
@@ -97,6 +111,7 @@ export default function PlayerController(props: {
                 setVisible(true);
                 break;
             case "j":
+                setDetailsVisible((v) => !v);
                 setVisible(false);
                 break;
             default:
@@ -121,8 +136,16 @@ export default function PlayerController(props: {
     }, [channels, pointer]);
 
     return (
-        <div className={"" + (visible ? "" : "hidden")}>
-            <div id="channels-list">
+        <div>
+            {channels ? (
+                <ChannelDetails
+                    channel={playingChannel}
+                    visible={detailsVisible}
+                />
+            ) : (
+                <></>
+            )}
+            <div id="channels-list" className={"" + (visible ? "" : "hidden")}>
                 {channels.map((channel, index) => (
                     <Channel
                         key={channel.channel_id}

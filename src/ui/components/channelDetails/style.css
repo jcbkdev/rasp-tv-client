@@ -1,0 +1,50 @@
+#channel-details {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0 36px;
+    width: 100vw;
+    height: 360px;
+    z-index: 9;
+    bottom: 0;
+    background: linear-gradient(30% #00000000, #000000ff);
+    transition: opacity 1s;
+}
+
+#channel-details .channel-info {
+    display: flex;
+    gap: 16px;
+}
+
+#channel-details .channel-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 188px;
+    height: 188px;
+    border-radius: 8px;
+    background: rgba(51, 51, 51, 0.3);
+    outline: 1px solid rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+}
+
+#channel-details .channel-logo img {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+}
+
+#channel-details .channel-desc {
+    display: flex;
+    align-items: center;
+}
+
+#channel-details .channel-desc .channel-name {
+    font-size: 2rem;
+    margin: 0;
+}
+
+.channel-details-hidden {
+    opacity: 0 !important;
+}
